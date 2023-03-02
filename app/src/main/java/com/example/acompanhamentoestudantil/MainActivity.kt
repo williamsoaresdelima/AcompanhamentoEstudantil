@@ -10,10 +10,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        findViewById<View>(logout).setOnClickListener {
-            val activity = Intent(this, LoginScreen::class.java)
-            startActivity(activity)
-        }
+        val activity = Intent(this, LoginScreen::class.java)
+        startActivity(activity)
     }
 }

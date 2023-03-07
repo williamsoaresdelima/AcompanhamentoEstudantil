@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appbarLayout"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,21 +79,59 @@
             android:layout_marginRight="16dp"
             android:textSize="18sp" />
 
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/btnLayout"
+            android:layout_below="@+id/textInput">
+
         <Button
             android:layout_below="@+id/textInput"
             android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="4dp"
             android:layout_marginBottom="16dp"
             android:text="Adicionar"
+            android:singleLine="true"
+            app:layout_constraintStart_toStartOf="@+id/textInput"
+            app:layout_constraintTop_toBottomOf="@+id/textInput"
+            />
+
+        <Button
+            android:layout_below="@+id/textInput"
+            android:id="@+id/btnDelete"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="6dp"
+            android:text="Deletar"
             app:layout_constraintStart_toStartOf="@+id/textInput"
             app:layout_constraintTop_toBottomOf="@+id/textInput"/>
-        />
+        <Button
+            android:layout_below="@+id/textInput"
+            android:id="@+id/btnClean"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="6dp"
+            android:text="Limpar"
+            app:layout_constraintStart_toStartOf="@+id/textInput"
+            app:layout_constraintTop_toBottomOf="@+id/textInput"/>
+
+
+
+        </LinearLayout>
+
 
         <TextView
-            android:layout_below="@+id/btnAdd"
+            android:layout_below="@+id/btnLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"

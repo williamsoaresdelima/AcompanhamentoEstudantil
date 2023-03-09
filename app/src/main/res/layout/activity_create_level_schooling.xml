@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appbarLayout"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,15 +23,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="2dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/outline_arrow_back_24">
+                android:layout_marginStart="10dp"
+                android:src="@drawable/outline_arrow_back_24"
+                android:contentDescription="@string/img_d_back">
 
             </ImageView>
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="Acompanhamento Estudantil">
+                app:title="@string/app_name">
 
 
                 <ImageView
@@ -39,7 +41,9 @@
                     android:id="@+id/logout"
                     android:src="@drawable/outline_logout_white_24"
                     android:layout_gravity="right"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/img_d_sign_out"
+                    tools:ignore="RtlHardcoded">
 
                 </ImageView>
             </androidx.appcompat.widget.Toolbar>
@@ -61,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:text="Cadastro Grau Escolaridade"
+            android:text="@string/ge_title"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black">
@@ -73,36 +77,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:hint="Escreva o grau de escolaridade."
+            android:hint="@string/ge_input_text"
             android:inputType="text"
             android:id="@+id/textInput"
             android:padding="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:autofillHints="" />
 
-        <Button
-            android:layout_below="@+id/textInput"
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:text="Adicionar"
-            app:layout_constraintStart_toStartOf="@+id/textInput"
-            app:layout_constraintTop_toBottomOf="@+id/textInput"/>
-        />
+            android:orientation="horizontal"
+            android:id="@+id/btnLayout"
+            android:layout_below="@+id/textInput">
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/add"
+                android:singleLine="true"
+                app:layout_constraintStart_toStartOf="@+id/textInput"
+                app:layout_constraintTop_toBottomOf="@+id/textInput"
+                tools:ignore="ButtonStyle" />
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/delete"
+                app:layout_constraintStart_toStartOf="@+id/textInput"
+                app:layout_constraintTop_toBottomOf="@+id/textInput"
+                tools:ignore="ButtonStyle" />
+            <Button
+                android:id="@+id/btnClean"
+                android:layout_width="fill_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="6dp"
+                android:text="@string/clean"
+                app:layout_constraintStart_toStartOf="@+id/textInput"
+                app:layout_constraintTop_toBottomOf="@+id/textInput"
+                tools:ignore="ButtonStyle" />
+
+        </LinearLayout>
+
 
         <TextView
-            android:layout_below="@+id/btnAdd"
+            android:layout_below="@+id/btnLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:id="@+id/headerList"
-            android:text="Graus Cadastrados"
+            android:text="@string/ge_list_title"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/black"

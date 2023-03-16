@@ -41,5 +41,10 @@ class Dashboard : AppCompatActivity() {
             val activity = Intent(this, LoginScreen::class.java)
             startActivity(activity)
         }
+
+        findViewById<View>(R.id.profile).setOnClickListener {
+            val activity = Intent(this, Profile::class.java)
+            startActivity(activity)
+        }
     }
 }

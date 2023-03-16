@@ -32,4 +32,10 @@
     <string name="img_d_back">Voltar</string>
     <string name="img_d_sign_out">Signout</string>
     <string name="ss_list_title">Materiais Cadastrados</string>
+    <string name="profile_title">Perfil</string>
+    <string name="name">Nome</string>
+    <string name="last_name">Sobrenome</string>
+    <string name="edit_profile">Atualizar Perfil</string>
+    <string name="denied_permission">Permissão negada</string>
+    <string name="approved_permission">Permissão aprovada</string>
 </resources>

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +19,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 class Profile : AppCompatActivity() {
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -44,18 +52,32 @@ class Profile : AppCompatActivity() {
 
         val user = firebaseAuth.currentUser
         if(user != null) {
-           // val displayName = user.displayName
+            val displayName = user.displayName
             val email = user.email
             val photoUrl = user.photoUrl
-            //val splitName = displayName.toString().split("")
-
-            //findViewById<EditText>(R.id.etName).setText(splitName[0])
-            //findViewById<EditText>(R.id.etLastName).setText(splitName[1])
+            if (displayName != "") {
+                val splitName = displayName.toString().split(" ")
+                if (splitName.size > 1) {
+                    findViewById<EditText>(R.id.etName).setText(splitName[0])
+                    findViewById<EditText>(R.id.etLastName).setText(splitName[1])
+                } else {
+                    findViewById<EditText>(R.id.etName).setText(displayName.toString())
+                }
+            }
             findViewById<EditText>(R.id.etEmail).setText(email)
+            if (photoUrl != null) {
+                Thread {
+                    val file = saveLocalFile(photoUrl.toString())
+                    runOnUiThread {
+                        val bitmap = BitmapFactory.decodeFile(file.path)
+                        findViewById<ImageView>(R.id.profile_image).setImageBitmap(bitmap)
+                    }
+                }.start()
+            }
         }
 
         findViewById<View>(R.id.btn_edit_profile).setOnClickListener {
-
+            saveProfile()
         }
 
         findViewById<View>(R.id.btnBack).setOnClickListener {
@@ -73,6 +95,17 @@ class Profile : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
         }
 
+        findViewById<View>(R.id.btn_edit_profile).setOnClickListener {
+            val u = firebaseAuth.currentUser
+            val emailAddress = u?.email.toString()
+
+            firebaseAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(this, R.string.email_sent_password, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), PERMISSION_REQUEST_CAMERA)
         }
@@ -82,12 +115,65 @@ class Profile : AppCompatActivity() {
         }
     }
 
-    fun saveLocalFile() {
+    private fun saveLocalFile(_url: String): File {
+        val url = URL(_url)
+        val connection = url.openConnection() as HttpURLConnection
+        connection.doInput = true;
+        connection.connect()
+        val input = connection.inputStream
+        val dir = File(getExternalFilesDir(null), "images")
+        if (!dir.exists()) {
+            dir.mkdir()
+        }
+        val file = File(dir, "imagem.jpge")
+        val output = FileOutputStream(file)
+        val buffer = ByteArray(1024)
+        var read: Int
+        while(input.read(buffer).also { read = it } != -1) {
+            output.write(buffer, 0, read)
+        }
 
+        output.flush()
+        output.close()
+        input.close()
+        return file
     }
 
-    fun saveProfile() {
+    private fun saveProfile() {
+        val email = findViewById<EditText>(R.id.etEmail).text.toString()
+        val name = findViewById<EditText>(R.id.etName).text.toString()
+        val lastName = findViewById<EditText>(R.id.etLastName).text.toString()
 
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.reference
+        val user = FirebaseAuth.getInstance().currentUser
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val imageRef = storageRef.child("profile_images/${uid}.jpeg")
+        val baos = ByteArrayOutputStream()
+        val data = baos.toByteArray()
+        this._image?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+
+        val uploadTask = imageRef.putBytes(data)
+
+        uploadTask.addOnFailureListener {
+            Toast.makeText(this, R.string.failure_image, Toast.LENGTH_SHORT).show()
+        }.addOnSuccessListener {_ ->
+            imageRef.downloadUrl.addOnSuccessListener { uri ->
+                val profileUpdates = userProfileChangeRequest {
+                    displayName = "${name} ${lastName}"
+                    photoUri = Uri.parse(uri.toString())
+                }
+
+                user!!.updateProfile(profileUpdates).addOnCompleteListener{ task ->
+                    if(task.isSuccessful){
+                        Toast.makeText(this, R.string.success_profile_update, Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(this, R.string.failure_profile_update, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(

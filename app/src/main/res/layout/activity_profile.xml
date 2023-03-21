@@ -145,6 +145,13 @@
                 android:text="@string/edit_profile"
                 />
 
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_edit_password"
+                android:text="@string/btn_edit_password"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

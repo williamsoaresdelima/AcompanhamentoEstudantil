@@ -3,6 +3,8 @@
     <string name="success_login">Logado com sucesso</string>
     <string name="fail_login">Falha ao logar</string>
     <string name="email_sent">Email de verificação enviado!</string>
+    <string name="forgot_password">Esqueci minha senha</string>
+    <string name="email_sent_password">Email de alteração de senha enviado!</string>
     <string name="unverified_email">Verifique seu email para logar</string>
     <string name="unfilled_fields">Preencha todos os campos</string>
     <string name="different_passwords">As senhas são diferentes</string>
@@ -38,4 +40,11 @@
     <string name="edit_profile">Atualizar Perfil</string>
     <string name="denied_permission">Permissão negada</string>
     <string name="approved_permission">Permissão aprovada</string>
+    <string name="success_image">Imagem enviada com sucesso</string>
+    <string name="failure_image">Falha ao enviar a imagem</string>
+    <string name="failure_profile_update">Falha ao salvar perfil</string>
+    <string name="success_profile_update">Perfil alterado com sucesso</string>
+    <string name="btn_edit_password">Alterar senha</string>
+    <string name="btn_send_email_password">Enviar email de alteração</string>
+    <string name="send_email_password_error">Falha ao enviar email de alteração</string>
 </resources>

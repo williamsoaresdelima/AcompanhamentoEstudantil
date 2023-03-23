@@ -50,11 +50,13 @@ class CreateSchoolSupplies : AppCompatActivity() {
             mGoogleSignClient.signOut()
             val activity = Intent(this, LoginScreen::class.java)
             startActivity(activity)
+            finish()
         }
 
         findViewById<View>(R.id.btnBack).setOnClickListener {
             val activity = Intent(this, Dashboard::class.java)
             startActivity(activity)
+            finish()
         }
 
         findViewById<android.widget.Button>(R.id.btnAdd).setOnClickListener{
@@ -85,6 +87,12 @@ class CreateSchoolSupplies : AppCompatActivity() {
             listAdapter.clear()
             saveData(listAdapter)
             adapter.notifyDataSetChanged()
+        }
+
+        findViewById<View>(R.id.add_supplies).setOnClickListener {
+            val activity = Intent(this, SchoolSuplies::class.java)
+            startActivity(activity)
+            finish()
         }
     }
 

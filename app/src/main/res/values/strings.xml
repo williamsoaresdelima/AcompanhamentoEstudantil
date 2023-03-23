@@ -45,6 +45,16 @@
     <string name="failure_profile_update">Falha ao salvar perfil</string>
     <string name="success_profile_update">Perfil alterado com sucesso</string>
     <string name="btn_edit_password">Alterar senha</string>
+    <string name="changed_password">Senha Alterada</string>
+    <string name="new_password">Nova senha</string>
     <string name="btn_send_email_password">Enviar email de alteração</string>
     <string name="send_email_password_error">Falha ao enviar email de alteração</string>
+    <string name="suplies_title">Titulo</string>
+    <string name="supplies_description">Descrição do material</string>
+    <string name="save_supplies">Salvar Mateerial</string>
+    <string name="creat_supplie_succes">Material criado com sucesso</string>
+    <string name="creat_level_succes">Ano escolar criado com sucesso</string>
+    <string name="level_year">Ano escolar</string>
+    <string name="select_year">Ano</string>
+    <string name="save_level">Salvar ano escolar</string>
 </resources>

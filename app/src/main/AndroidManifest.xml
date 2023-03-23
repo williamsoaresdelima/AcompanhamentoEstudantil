@@ -17,6 +17,19 @@
         android:theme="@style/Theme.AcompanhamentoEstudantil"
         tools:targetApi="31">
         <activity
+            android:name=".LevelSchooling"
+            android:exported="false" />
+        <activity
+            android:name=".SchoolSuplies"
+            android:exported="false"
+            android:label="Criar Material"
+            android:parentActivityName=".CreateSchoolSupplies" />
+        <activity
+            android:name=".ChangePassword"
+            android:exported="false"
+            android:label="Alterar Senha"
+            android:parentActivityName=".Profile" />
+        <activity
             android:name=".ForgotPassword"
             android:exported="false" />
         <activity

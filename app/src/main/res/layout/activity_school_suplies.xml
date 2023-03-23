@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    tools:context=".SchoolSuplies">
+
+    <LinearLayout
+        android:id="@+id/textArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/suplies_title"
+            android:padding="18dp"
+            app:layout_constraintBottom_toTopOf="@id/etDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/purple_500"
+            android:gravity="top"
+            android:hint="@string/supplies_description"
+            android:inputType="textMultiLine"
+            android:lines="4"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="@id/etTitle"
+            app:layout_constraintStart_toStartOf="@id/etTitle"
+            app:layout_constraintTop_toTopOf="@id/etTitle" />
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_supplies"
+        android:id="@+id/btn_save_supplies"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/textArea"
+        app:layout_constraintStart_toStartOf="@+id/textArea"
+        app:layout_constraintTop_toBottomOf="@+id/textArea"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

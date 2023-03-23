@@ -83,6 +83,7 @@ class Profile : AppCompatActivity() {
         findViewById<View>(R.id.btnBack).setOnClickListener {
             val activity = Intent(this, Dashboard::class.java)
             startActivity(activity)
+            finish()
         }
 
         findViewById<View>(R.id.fab_files).setOnClickListener {
@@ -96,14 +97,13 @@ class Profile : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.btn_edit_profile).setOnClickListener {
-            val u = firebaseAuth.currentUser
-            val emailAddress = u?.email.toString()
+            saveProfile()
+        }
 
-            firebaseAuth.sendPasswordResetEmail(emailAddress).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, R.string.email_sent_password, Toast.LENGTH_SHORT).show()
-                }
-            }
+        findViewById<View>(R.id.btn_edit_password).setOnClickListener {
+            val activity = Intent(this, ChangePassword::class.java)
+            startActivity(activity)
+            finish()
         }
 
         if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -115,53 +115,56 @@ class Profile : AppCompatActivity() {
         }
     }
 
-    private fun saveLocalFile(_url: String): File {
+    private fun saveLocalFile(_url: String): File{
         val url = URL(_url)
         val connection = url.openConnection() as HttpURLConnection
-        connection.doInput = true;
+        connection.doInput = true
         connection.connect()
+
         val input = connection.inputStream
         val dir = File(getExternalFilesDir(null), "images")
-        if (!dir.exists()) {
+        if(!dir.exists()){
             dir.mkdir()
         }
-        val file = File(dir, "imagem.jpge")
+
+        val file = File(dir, "imagem.jpg")
         val output = FileOutputStream(file)
+
         val buffer = ByteArray(1024)
-        var read: Int
-        while(input.read(buffer).also { read = it } != -1) {
+        var read: Int;
+        while(input.read(buffer).also { read = it} != -1){
             output.write(buffer, 0, read)
         }
 
         output.flush()
         output.close()
         input.close()
+
         return file
     }
 
-    private fun saveProfile() {
-        val email = findViewById<EditText>(R.id.etEmail).text.toString()
+    private fun saveProfile(){
         val name = findViewById<EditText>(R.id.etName).text.toString()
-        val lastName = findViewById<EditText>(R.id.etLastName).text.toString()
+        val last_name = findViewById<EditText>(R.id.etLastName).text.toString()
 
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
         val user = FirebaseAuth.getInstance().currentUser
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        val uid = user?.uid
 
-        val imageRef = storageRef.child("profile_images/${uid}.jpeg")
+        val imageRef = storageRef.child("profile_images/${uid}")
         val baos = ByteArrayOutputStream()
-        val data = baos.toByteArray()
         this._image?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
+        val data = baos.toByteArray()
         val uploadTask = imageRef.putBytes(data)
 
         uploadTask.addOnFailureListener {
             Toast.makeText(this, R.string.failure_image, Toast.LENGTH_SHORT).show()
-        }.addOnSuccessListener {_ ->
+        }.addOnSuccessListener { taskSnapshot ->
             imageRef.downloadUrl.addOnSuccessListener { uri ->
                 val profileUpdates = userProfileChangeRequest {
-                    displayName = "${name} ${lastName}"
+                    displayName = "${name} ${last_name}"
                     photoUri = Uri.parse(uri.toString())
                 }
 
@@ -200,16 +203,18 @@ class Profile : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == RESULT_OK) {
-            when(resultCode){
+
+        if(resultCode == RESULT_OK){
+            when(requestCode){
                 REQUEST_IMAGE_GALLERY -> {
                     val selectedImage: Uri? = data?.data
                     val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImage)
+
                     findViewById<ImageView>(R.id.profile_image).setImageBitmap(imageBitmap)
                     this._image = imageBitmap
                 }
-                REQUEST_IMAGE_CAPTURE-> {
-                    val imageCaptured = data?.extras?.get("data") as Bitmap
+                REQUEST_IMAGE_CAPTURE -> {
+                    val imageCaptured =  data?.extras?.get("data") as Bitmap
                     findViewById<ImageView>(R.id.profile_image).setImageBitmap(imageCaptured)
                     this._image = imageCaptured
                 }

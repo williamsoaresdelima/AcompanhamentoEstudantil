@@ -93,6 +93,12 @@ class CreateLevelSchooling : AppCompatActivity() {
             saveData(listAdapter)
             adapter.notifyDataSetChanged()
         }
+
+        findViewById<View>(R.id.add_level).setOnClickListener {
+            val activity = Intent(this, LevelSchooling::class.java)
+            startActivity(activity)
+            finish()
+        }
     }
 
     private fun getData(): ArrayList<String> {

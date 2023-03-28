@@ -1,12 +1,16 @@
 package com.example.acompanhamentoestudantil
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class SchoolSuplies : AppCompatActivity() {
     private lateinit var  name: EditText
@@ -29,12 +33,49 @@ class SchoolSuplies : AppCompatActivity() {
     private fun loadSupplie (){
         this.supplieId = intent.getStringExtra("id") ?: ""
         if(supplieId === "") return
-            //TODO: Carregar tarefa
+
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/supplies/$supplieId")
+
+        ref.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if(!snapshot.exists()) return
+
+                findViewById<EditText>(R.id.etTitle).setText(snapshot.child("name").value.toString())
+                findViewById<EditText>(R.id.etDescription).setText(snapshot.child("description").value.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@SchoolSuplies, "Erro ao carregar tarefa", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun createUpdateSupplie (){
         if(supplieId !== ""){
-            //TODO: Atualizar tarefa
+            val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/supplies/$supplieId")
+
+            ref.addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if(!snapshot.exists()) return
+                    val task = snapshot.value as HashMap<String, String>
+
+
+                    task["name"] = findViewById<EditText>(R.id.etTitle).text.toString()
+                    task["description"] = findViewById<EditText>(R.id.etDescription).text.toString()
+
+                    ref.setValue(task)
+                    Toast.makeText(this@SchoolSuplies, "Tarefa atualizada com sucesso", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(this@SchoolSuplies, "Erro ao atualizar tarefa", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            Intent(this, CreateSchoolSupplies::class.java).also {
+                startActivity(it)
+            }
+
         }else{
             name = findViewById(R.id.etTitle)
             description = findViewById(R.id.etDescription)
@@ -44,10 +85,13 @@ class SchoolSuplies : AppCompatActivity() {
                 "description" to description.text.toString()
             )
 
-            val novoElemento = db_ref.push()
-            novoElemento.setValue(supplie)
+            val newElement = db_ref.push()
+            newElement.setValue(supplie)
 
             Toast.makeText(this, R.string.creat_supplie_succes, Toast.LENGTH_SHORT).show()
+            Intent(this, CreateSchoolSupplies::class.java).also {
+                startActivity(it)
+            }
         }
     }
 }

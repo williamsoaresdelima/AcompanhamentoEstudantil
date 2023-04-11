@@ -142,7 +142,7 @@ class SchoolSuplies : AppCompatActivity() {
         })
     }
 
-    private fun createUpdateSupplie (){
+    private fun createUpdateSupplie () {
         if(supplieId !== ""){
             val ref = FirebaseDatabase.getInstance().getReference("/users/$uid/supplies/$supplieId")
 

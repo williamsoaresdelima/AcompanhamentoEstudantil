@@ -47,16 +47,66 @@
             app:layout_constraintStart_toStartOf="@id/etTitle"
             app:layout_constraintTop_toTopOf="@id/etTitle" />
     </LinearLayout>
-
+    <LinearLayout
+        app:layout_constraintEnd_toEndOf="@+id/textArea"
+        app:layout_constraintStart_toStartOf="@+id/textArea"
+        app:layout_constraintTop_toBottomOf="@+id/textArea"
+        android:id="@+id/dataArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:gravity="center">
+        <EditText
+            android:id="@+id/in_date"
+            android:backgroundTint="@color/purple_500"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            />
+        <Button
+            android:id="@+id/btn_date"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="@string/in_date"
+            />
+    </LinearLayout>
+    <LinearLayout
+        app:layout_constraintEnd_toEndOf="@+id/dataArea"
+        app:layout_constraintStart_toStartOf="@+id/dataArea"
+        app:layout_constraintTop_toBottomOf="@+id/dataArea"
+        android:id="@+id/horaArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:gravity="center">
+        <EditText
+            android:id="@+id/in_time"
+            android:backgroundTint="@color/purple_500"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+        <Button
+            android:id="@+id/btn_time"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_height="wrap_content"
+            android:text="@string/in_time"
+            />
+    </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/save_supplies"
         android:id="@+id/btn_save_supplies"
         android:layout_marginHorizontal="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/textArea"
-        app:layout_constraintStart_toStartOf="@+id/textArea"
-        app:layout_constraintTop_toBottomOf="@+id/textArea"
+        app:layout_constraintEnd_toEndOf="@+id/horaArea"
+        app:layout_constraintStart_toStartOf="@+id/horaArea"
+        app:layout_constraintTop_toBottomOf="@+id/horaArea"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

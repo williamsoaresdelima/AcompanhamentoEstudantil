@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.acompanhamentoestudantil.fragment.WeatherFragment
+import com.example.acompanhamentoestudantil.fragment.WeatherFragments
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -17,9 +17,10 @@ class Dashboard : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
-        supportActionBar?.hide()
 
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, WeatherFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, WeatherFragments()).commit()
+
+        supportActionBar?.hide()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.example.acompanhamentoestudantil.fragment.PasswordDifficulty
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -20,12 +21,13 @@ import com.google.firebase.auth.FirebaseUser
 
 class CreateAccount : AppCompatActivity() {
     private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
+    private lateinit var etPassword: PasswordDifficulty
     private lateinit var etConfirmPassword: EditText
+    lateinit var createAccountInputArray: Array<Any>
     private val req_Code: Int = 123
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var  firebaseAuth: FirebaseAuth
-    private lateinit var createAccountInputArray: Array<EditText>
+    //private lateinit var createAccountInputArray: Array<EditText>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -42,7 +44,7 @@ class CreateAccount : AppCompatActivity() {
         firebaseAuth = FirebaseAuth.getInstance()
 
         etEmail = findViewById(R.id.etEmail)
-        etPassword = findViewById(R.id.etPassword)
+        etPassword = supportFragmentManager.findFragmentById(R.id.etPassword) as PasswordDifficulty
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
         createAccountInputArray = arrayOf(etEmail, etPassword, etConfirmPassword)
 

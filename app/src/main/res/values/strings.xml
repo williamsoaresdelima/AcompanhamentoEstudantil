@@ -51,12 +51,37 @@
     <string name="send_email_password_error">Falha ao enviar email de alteração</string>
     <string name="suplies_title">Titulo</string>
     <string name="supplies_description">Descrição do material</string>
-    <string name="save_supplies">Salvar Mateerial</string>
+    <string name="delete_supplies">Deletar Material</string>
+    <string name="wish_delete_supplies">Deseja deletar Material?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="ss_load_error">Erro ao carregar Material</string>
+    <string name="ss_delete_success">Sucesso ao deletar material</string>
+    <string name="save_supplies">Salvar Material</string>
     <string name="creat_supplie_succes">Material criado com sucesso</string>
     <string name="creat_level_succes">Ano escolar criado com sucesso</string>
+    <string name="success_edit_level">Ano escolar editado com sucesso</string>
+    <string name="success_edit_supplie">Material editado com sucesso</string>
+    <string name="error_edit_supplie_success">Erro ao editar material escolar</string>
+    <string name="error_edit_level_success">Erro ao editar ano escolar</string>
+    <string name="noti_creat_schooling">Ano escolar criado com sucesso</string>
+    <string name="delete_schooling">Deletar ano escolar</string>
+    <string name="wish_delete_schooling">Deseja deletar esse ano escolar?</string>
+    <string name="sl_load_error">Erro ao carregar ano escolar</string>
+    <string name="sl_delete_success">Sucesso ao deletar ano escolar</string>
     <string name="level_year">Ano escolar</string>
     <string name="select_year">Ano</string>
     <string name="save_level">Salvar ano escolar</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_password">Sem senha</string>
+    <string name="very_weak_password">Senha muito fraca</string>
+    <string name="weak_password">Senha fraca</string>
+    <string name="medium_password">Senha media</string>
+    <string name="strong_password">Senha forte</string>
+    <string name="very_strong_password">Senha muito forte</string>
+    <string name="notification_channel">Canal de notificação padrão</string>
+    <string name="notification_channel_description">Canal padrão para envio de notificações</string>
+    <string name="noti_creat_supplie">Material criado com sucesso</string>
+    <string name="in_date">Data</string>
+    <string name="in_time">Hora</string>
+
 </resources>

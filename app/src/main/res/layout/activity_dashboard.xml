@@ -38,20 +38,20 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="@color/white"
-        android:id="@+id/fragment_container"/>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/displayFlex"
         android:layout_marginTop="60dp"
         >
-
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:id="@+id/fragment_container"
+            />
         <Button
+            android:layout_marginTop="90dp"
             android:id="@+id/createSchoolSupplies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

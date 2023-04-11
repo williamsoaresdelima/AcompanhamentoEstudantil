@@ -1,118 +1,109 @@
 package com.example.acompanhamentoestudantil
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.SparseBooleanArray
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class CreateLevelSchooling : AppCompatActivity() {
     private var gson = Gson()
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var  firebaseAuth: FirebaseAuth
     private lateinit var mGoogleSignClient: GoogleSignInClient
+    private var uid = FirebaseAuth.getInstance().currentUser?.uid
+    private val ref = FirebaseDatabase.getInstance().getReference("users/$uid/level")
+    private val listItems = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_level_schooling)
         supportActionBar?.hide()
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
         firebaseAuth = FirebaseAuth.getInstance()
         mGoogleSignClient = GoogleSignIn.getClient(this, gso)
-        sharedPreferences = getSharedPreferences("grau-escolar", Context.MODE_PRIVATE)
-
+        val adapter = ArrayAdapter(this,android.R.layout.simple_list_item_1, listItems)
         val listView = findViewById<android.widget.ListView>(R.id.list)
-        val editText = findViewById<android.widget.EditText>(R.id.textInput)
-        val listAdapter = getData()
-        val adapter = ArrayAdapter(this,
-            android.R.layout.simple_list_item_multiple_choice,
-            listAdapter
-        )
-
         listView.adapter = adapter
-        adapter.notifyDataSetChanged()
-
-        findViewById<android.widget.Button>(R.id.btnAdd).setOnClickListener{
-            listAdapter.add(editText.text.toString())
-            listView.adapter = adapter
-            adapter.notifyDataSetChanged()
-
-            editText.text.clear()
-        }
-
-        findViewById<View>(R.id.btnBack).setOnClickListener {
-            val activity = Intent(this, Dashboard::class.java)
-            startActivity(activity)
-        }
 
         findViewById<View>(R.id.logout).setOnClickListener {
             firebaseAuth.signOut()
             mGoogleSignClient.signOut()
             val activity = Intent(this, LoginScreen::class.java)
             startActivity(activity)
+            finish()
         }
 
-        findViewById<android.widget.Button>(R.id.btnAdd).setOnClickListener{
-            listAdapter.add(editText.text.toString())
-            listView.adapter = adapter
-            adapter.notifyDataSetChanged()
-
-            saveData(listAdapter)
-            editText.text.clear()
+        findViewById<View>(R.id.btnBack).setOnClickListener {
+            val activity = Intent(this, Dashboard::class.java)
+            startActivity(activity)
+            finish()
         }
 
-        findViewById<View>(R.id.btnDelete).setOnClickListener {
-            val position: SparseBooleanArray = listView.checkedItemPositions
-            val count = listView.count
-            var item = count - 1
-            while (item >= 0) {
-                if (position.get(item)) {
-                    adapter.remove(listAdapter[item])
-                }
-                item--
-            }
-            saveData(listAdapter)
-            position.clear()
-            adapter.notifyDataSetChanged()
-        }
-
-        findViewById<View>(R.id.btnClean).setOnClickListener {
-            listAdapter.clear()
-            saveData(listAdapter)
-            adapter.notifyDataSetChanged()
-        }
-
-        findViewById<View>(R.id.add_level).setOnClickListener {
+        findViewById<View>(R.id.add_supplies).setOnClickListener {
             val activity = Intent(this, LevelSchooling::class.java)
             startActivity(activity)
             finish()
         }
-    }
 
-    private fun getData(): ArrayList<String> {
-        val arrayJson = sharedPreferences.getString("lista", null)
-        return if (arrayJson.isNullOrEmpty()) {
-            arrayListOf()
-        } else {
-            gson.fromJson(arrayJson, object : TypeToken<ArrayList<String>>(){}.type)
-        }
-    }
-    private fun saveData(array: ArrayList<String>) {
-        val arrayJson = gson.toJson(array)
-        val editor = sharedPreferences.edit()
-        editor.putString("lista", arrayJson)
-        editor.apply()
+        ref.addValueEventListener(object: ValueEventListener {
+            val ctx = this@CreateLevelSchooling;
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                listItems.clear()
+
+                for(child in dataSnapshot.children){
+                    listItems.add(child.child("description").value.toString())
+                }
+
+                adapter.notifyDataSetChanged()
+
+                listView.setOnItemLongClickListener { parent, view, position, id ->
+                    val itemId =  dataSnapshot.children.toList()[position].key
+
+                    if(itemId != null){
+                        AlertDialog.Builder(ctx)
+                            .setTitle(R.string.delete_schooling)
+                            .setMessage(R.string.wish_delete_schooling)
+                            .setPositiveButton(R.string.yes){ dialog, which ->
+                                ref.child(itemId).removeValue()
+                                Toast.makeText(ctx, R.string.sl_delete_success, Toast.LENGTH_SHORT).show()
+                            }
+                            .setNegativeButton(R.string.no){ dialog, which ->
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+
+                    true
+                }
+                listView.setOnItemClickListener { parent, view, position, id ->
+                    val itemId =  dataSnapshot.children.toList()[position].key
+
+                    val activity = Intent(ctx, LevelSchooling::class.java)
+                    activity.putExtra("id", itemId)
+                    startActivity(activity)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(ctx, R.string.sl_load_error, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

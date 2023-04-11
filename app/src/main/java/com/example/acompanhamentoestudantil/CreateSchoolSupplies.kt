@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.example.acompanhamentoestudantil.fragment.WeatherFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -30,7 +29,6 @@ class CreateSchoolSupplies : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_school_supplies)
         supportActionBar?.hide()
-        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, WeatherFragment()).commit()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -79,13 +77,13 @@ class CreateSchoolSupplies : AppCompatActivity() {
 
                     if(itemId != null){
                         AlertDialog.Builder(ctx)
-                            .setTitle("Deletar tarefa")
-                            .setMessage("Deseja deletar a tarefa?")
-                            .setPositiveButton("Sim"){ dialog, which ->
+                            .setTitle(R.string.delete_supplies)
+                            .setMessage(R.string.wish_delete_supplies)
+                            .setPositiveButton(R.string.yes){ dialog, which ->
                                 ref.child(itemId).removeValue()
-                                Toast.makeText(ctx, "Tarefa deletada com sucesso", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(ctx, R.string.ss_delete_success, Toast.LENGTH_SHORT).show()
                             }
-                            .setNegativeButton("Não"){ dialog, which ->
+                            .setNegativeButton(R.string.no){ dialog, which ->
                                 dialog.dismiss()
                             }
                             .show()
@@ -103,7 +101,7 @@ class CreateSchoolSupplies : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(ctx, "Erro ao carregar tarefas", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ctx, R.string.ss_load_error, Toast.LENGTH_SHORT).show()
             }
         })
     }

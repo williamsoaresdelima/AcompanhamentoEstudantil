@@ -27,7 +27,6 @@ class CreateAccount : AppCompatActivity() {
     private val req_Code: Int = 123
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var  firebaseAuth: FirebaseAuth
-    //private lateinit var createAccountInputArray: Array<EditText>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
